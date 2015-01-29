@@ -11,8 +11,8 @@ public class Player extends Actor {
 	 * @param h
 	 * @param s
 	 */
-	public Player(int x, int y, int sc, int h, int s) {
-		super(x, y, sc);
+	public Player(int x, int y, int scX, int scY, int h, int s) {
+		super(x, y, scX, scY);
 		health=h;
 		score=s;
 	}
@@ -40,32 +40,29 @@ public class Player extends Actor {
 		score++;
 	}
 	
+	/**
+	 * return health 
+	 * @return
+	 */
 	public int getHealth(){
 		return health;
 	}
 	
+	/**
+	 * set health to input int h
+	 * @param h
+	 */
 	public void setHealth(int h){
 		health=h;
 	}
 	
+	/**
+	 * decrement players health by inputed amount
+	 * @param damage
+	 */
 	public void damagePlayer(int damage){
 		health-=damage;
 	}
 	
-	/**
-	 * moves player position using x and y as a change variable rather than a hard position
-	 */
-	@Override
-	public void move(int x, int y){
-		if(this.getX()+x>this.getScreenMax()||this.getX()+x<0){
-			this.setX(x);
-		}
-	}
-	
-	public void move(char direction){
-		if(direction=='q'){
-			
-		}
-	}
 	
 }
