@@ -2,7 +2,8 @@
 public class Enemy extends Actor {
 	
 	private boolean offScreen;
-
+	private int damage=10;
+	
 	public Enemy(double x, double y, double scX, double scY) {
 		super(x, y, scX, scY);
 		// TODO Auto-generated constructor stub
@@ -41,6 +42,11 @@ public class Enemy extends Actor {
 
 	public void setOffScreen(boolean offScreen) {
 		this.offScreen = offScreen;
+	}
+
+	public int getDamage() {
+		// TODO Auto-generated method stub
+		return this.damage;
 	}
 
 }
