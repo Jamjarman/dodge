@@ -8,7 +8,7 @@ public class Enemy extends Actor {
 		super(x, y, scX, scY);
 		// TODO Auto-generated constructor stub
 		offScreen=false;
-		this.getVel().randomize();
+		this.reset();
 	}
 	
 	/**
@@ -29,8 +29,54 @@ public class Enemy extends Actor {
 		}
 	}
 	
+	/**
+	 * resets (also used to set due to laziness) enemys position and rerandomizes it's velocity
+	 * position is set based on a basic analysis of the components of velocity
+	 * larger of x or y absolute value is set to an extreme side of the screen
+	 * other of x or y is randomized based on it's positive or negativeness
+	 */
 	public void reset(){
 		this.getVel().randomize();
+		if(Math.abs(this.getVel().getXVel())>=Math.abs(this.getVel().getYVel())){
+			if(this.getVel().getXVel()<0){
+				this.setX(this.getScreenMaxX());
+				if (this.getVel().getYVel()>0) {
+					this.setY(Math.random()*(this.getScreenMaxY()/2));
+				}
+				else{
+					this.setY(Math.random()*(this.getScreenMaxY()/2)+(this.getScreenMaxY()/2));
+				}
+			}
+			else{
+				this.setX(0);
+				if (this.getVel().getYVel()>0) {
+					this.setY(Math.random()*(this.getScreenMaxY()/2));
+				}
+				else{
+					this.setY(Math.random()*(this.getScreenMaxY()/2)+(this.getScreenMaxX()/2));
+				}
+			}
+		}
+		else{
+			if(this.getVel().getYVel()<0){
+				this.setY(this.getScreenMaxX());
+				if (this.getVel().getXVel()>0) {
+					this.setX(Math.random()*(this.getScreenMaxX()/2));
+				}
+				else{
+					this.setX(Math.random()*(this.getScreenMaxX()/2)+(this.getScreenMaxX()/2));
+				}
+			}
+			else{
+				this.setY(0);
+				if (this.getVel().getXVel()>0) {
+					this.setX(Math.random()*(this.getScreenMaxX()/2));
+				}
+				else{
+					this.setX(Math.random()*(this.getScreenMaxX()/2)+(this.getScreenMaxX()/2));
+				}
+			}
+		}
 		this.setX(Math.random()*this.getScreenMaxX());
 		this.setY(Math.random()*this.getScreenMaxY());
 		offScreen=false;
