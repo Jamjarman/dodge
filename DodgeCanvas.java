@@ -6,12 +6,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 
 public class DodgeCanvas extends Canvas implements Runnable {
 
 	// animation fields
 	private Thread repaintReminder; 	// for animation
+	private BufferedImage buffer;
 	
 	// actor fields
 	private Direction newDir;
@@ -180,8 +182,8 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		}
 		
 	} // end method setEnemyNum
-
-	public void paint(Graphics g) {
+	
+	public void paintScreen(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // for smoother display
 		
@@ -208,8 +210,19 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		g2d.setStroke(bs);
 		g2d.drawLine(screenX/2-60, OTHER_MARGINS+50, screenX/2-60, OTHER_MARGINS+(25*5));
 		g2d.drawLine(screenX/2+60, OTHER_MARGINS+50, screenX/2+60, OTHER_MARGINS+(25*5));
+	}
 	
-		repaint();
+	public void update(Graphics g){
+		paint(g);
+	}
+
+	public void paint(Graphics g) {
+		if(buffer==null || buffer.getWidth(null)!=getWidth()||buffer.getHeight(null)!=getHeight()){
+			buffer=(BufferedImage) createImage(getWidth(), getHeight());
+		}
+		paintScreen(buffer.getGraphics());
+		Graphics2D g2=(Graphics2D)g;
+		g2.drawImage(buffer, 0, 0, null);
 	}
 	
 	/**
