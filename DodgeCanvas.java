@@ -34,14 +34,14 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private final int OTHER_MARGINS = 40; 	// dimensions of left, up, right margins
 	private final int GRID_DIM = 20; 		// width and height of a single cell
 	
-	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad) {
-		
+	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE) {
+		System.out.println("initializing canvas");
 		screenX = frameWidth;
 		screenY = frameHeight;
 		health = initHealth;
 		score = initScore;
 		bubble = colRad;
-		
+		numEnemies=numE;
 		// Key listener
 		addKeyListener(new KeyListener() {			
 				@Override
@@ -68,7 +68,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 					
 		}); // end of key listener
 		
-		setEnemyNum(numEnemies);
+		//setEnemyNum(numEnemies);
 		setP(new Player(screenX/2, screenY/2, screenX, screenY, health, score));
 		genEnemies();
 		
@@ -180,7 +180,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				newArr[i]=this.eArr[i];
 			}
 		}
-		
+		eArr=newArr;
 	} // end method setEnemyNum
 	
 	public void paintScreen(Graphics g){
@@ -217,14 +217,27 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	}
 
 	public void paint(Graphics g) {
+		System.out.println("in paint method");
 		if(buffer==null || buffer.getWidth(null)!=getWidth()||buffer.getHeight(null)!=getHeight()){
 			buffer=(BufferedImage) createImage(getWidth(), getHeight());
 		}
 		paintScreen(buffer.getGraphics());
 		Graphics2D g2=(Graphics2D)g;
-		g2.drawImage(buffer, 0, 0, null);
+		BufferedImage withActors=buffer;
+		paintActors(withActors.getGraphics());
+		g2.drawImage(withActors, 0, 0, null);
 	}
 	
+	private void paintActors(Graphics graphics) {
+		Graphics2D g2=(Graphics2D)graphics;
+		g2.setColor(new Color(0f, 1f, 0f));
+		g2.drawRect((int)player.getX(), (int)player.getY(), 20, 20);
+		g2.setColor(new Color(1f, 0f, 0f));
+		for(int i=0; i<numEnemies; i++){
+			g2.drawRect((int)eArr[i].getX(), (int)eArr[i].getY(), 20, 20);
+		}
+	}
+
 	/**
 	 * Method to randomly choose a color scheme for the screen borders
 	 * (not important, just had it left over)
@@ -263,7 +276,9 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (repaintReminder == Thread.currentThread()) {
+			System.out.println("Running thread");
 			repaint();
+			cycleTurn();
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -271,6 +286,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		
 	} // end run()
 	
 }
