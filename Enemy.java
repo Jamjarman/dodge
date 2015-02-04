@@ -4,8 +4,8 @@ public class Enemy extends Actor {
 	private boolean offScreen;
 	private int damage=10;
 	
-	public Enemy(double x, double y, double scX, double scY) {
-		super(x, y, scX, scY);
+	public Enemy(double x, double y, double scX, double scY, double minX, double minY) {
+		super(x, y, scX, scY, minX, minY);
 		// TODO Auto-generated constructor stub
 		offScreen=false;
 		this.reset();
@@ -18,11 +18,11 @@ public class Enemy extends Actor {
 	@Override
 	public void move(){
 		if(!offScreen){
-			if(this.getX()+this.getVel().getXVel()>0&&this.getX()+this.getVel().getXVel()<this.getScreenMaxX())
+			if(this.getX()+this.getVel().getXVel()>this.getScreenMinX()&&this.getX()+this.getVel().getXVel()<this.getScreenMaxX())
 				this.setX(this.getX()+this.getVel().getXVel());
 			else
 				offScreen=true;
-			if(this.getY()+this.getVel().getYVel()>0&&this.getY()+this.getVel().getYVel()<this.getScreenMaxY())
+			if(this.getY()+this.getVel().getYVel()>this.getScreenMinY()&&this.getY()+this.getVel().getYVel()<this.getScreenMaxY())
 				this.setY(this.getY()+this.getVel().getYVel());
 			else
 				offScreen=true;
@@ -41,25 +41,25 @@ public class Enemy extends Actor {
 			if(this.getVel().getXVel()<0){
 				this.setX(this.getScreenMaxX());
 				if (this.getVel().getYVel()>0) {
-					this.setY(Math.random()*(this.getScreenMaxY()/2));
+					this.setY(Math.random()*(this.getScreenMaxY()/2)+(this.getScreenMaxY()/2));
 				}
 				else{
-					this.setY(Math.random()*(this.getScreenMaxY()/2)+(this.getScreenMaxY()/2));
+					this.setY(Math.random()*(this.getScreenMaxY()/2));
 				}
 			}
 			else{
-				this.setX(0);
+				this.setX(this.getScreenMinX());
 				if (this.getVel().getYVel()>0) {
-					this.setY(Math.random()*(this.getScreenMaxY()/2));
+					this.setY(Math.random()*(this.getScreenMaxY()/2)+(this.getScreenMaxX()/2));
 				}
 				else{
-					this.setY(Math.random()*(this.getScreenMaxY()/2)+(this.getScreenMaxX()/2));
+					this.setY(Math.random()*(this.getScreenMaxY()/2));
 				}
 			}
 		}
 		else{
 			if(this.getVel().getYVel()<0){
-				this.setY(this.getScreenMaxX());
+				this.setY(this.getScreenMaxY());
 				if (this.getVel().getXVel()>0) {
 					this.setX(Math.random()*(this.getScreenMaxX()/2));
 				}
@@ -68,7 +68,7 @@ public class Enemy extends Actor {
 				}
 			}
 			else{
-				this.setY(0);
+				this.setY(this.getScreenMinY());
 				if (this.getVel().getXVel()>0) {
 					this.setX(Math.random()*(this.getScreenMaxX()/2));
 				}
@@ -77,8 +77,6 @@ public class Enemy extends Actor {
 				}
 			}
 		}
-		this.setX(Math.random()*this.getScreenMaxX());
-		this.setY(Math.random()*this.getScreenMaxY());
 		offScreen=false;
 	}
 

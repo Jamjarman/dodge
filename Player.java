@@ -11,8 +11,8 @@ public class Player extends Actor {
 	 * @param h
 	 * @param s
 	 */
-	public Player(int x, int y, int scX, int scY, int h, int s) {
-		super(x, y, scX, scY);
+	public Player(double x, double y, double scX, double scY, double minX, double minY, int h, int s) {
+		super(x, y, scX, scY, minX, minY);
 		health=h;
 		score=s;
 	}

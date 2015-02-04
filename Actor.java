@@ -5,13 +5,17 @@ public class Actor {
 	private double yPos;
 	private double screenMaxX;
 	private double screenMaxY;
+	private double screenMinX;
+	private double screenMinY;
 	private Direction vel;
 	
-	public Actor(double x, double y, double scX, double scY){
+	public Actor(double x, double y, double scX, double scY, double minX, double minY){
 		xPos=x;
 		yPos=y;
 		screenMaxX=scX;
 		screenMaxY=scY;
+		screenMinX=minX;
+		screenMinY=minY;
 		vel=new Direction(0,0);
 	}
 	
@@ -48,9 +52,9 @@ public class Actor {
 	}
 	
 	public void move(){
-		if(xPos+this.vel.getXVel()>0&&xPos+this.vel.getXVel()<this.screenMaxX)
+		if(xPos+this.vel.getXVel()>this.screenMinX&&xPos+this.vel.getXVel()<this.screenMaxX)
 			xPos=xPos+this.vel.getXVel();
-		if(yPos+this.vel.getYVel()>0&&yPos+this.vel.getYVel()<this.screenMaxY)
+		if(yPos+this.vel.getYVel()>this.screenMinY&&yPos+this.vel.getYVel()<this.screenMaxY)
 			yPos=yPos+this.vel.getYVel();
 	}
 	
@@ -60,6 +64,22 @@ public class Actor {
 	
 	public void setY(double y){
 		yPos=y;
+	}
+
+	public double getScreenMinX() {
+		return screenMinX;
+	}
+
+	public void setScreenMinX(double screenMinX) {
+		this.screenMinX = screenMinX;
+	}
+
+	public double getScreenMinY() {
+		return screenMinY;
+	}
+
+	public void setScreenMinY(double screenMinY) {
+		this.screenMinY = screenMinY;
 	}
 	
 }

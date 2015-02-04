@@ -4,8 +4,10 @@ public class Game {
 	private Player p;
 	private Enemy[] eArr;
 	private int enemyNum;
-	private int screenX;
-	private int screenY;
+	private double screenX;
+	private double screenY;
+	private double screenMinX;
+	private double screenMinY;
 	private static double BUBBLE=3;
 	
 	/**
@@ -16,11 +18,13 @@ public class Game {
 	 * @param s
 	 * @param e
 	 */
-	public Game(int xS, int yS, int h, int s, int e){
+	public Game(double xS, double yS, double minX, double minY, int h, int s, int e){
 		screenX=xS;
 		screenY=yS;
+		screenMinX=minX;
+		screenMinY=minY;
 		setEnemyNum(e);
-		setP(new Player(xS/2, yS/2, screenX, screenY, h, s));
+		setP(new Player(xS/2, yS/2, screenX, screenY, minX, minY, h, s));
 		generateE();
 	}
 
@@ -30,7 +34,7 @@ public class Game {
 	private void generateE() {
 		this.eArr=new Enemy[this.enemyNum];
 		for(int i=0; i<enemyNum; i++){
-			this.eArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY);
+			this.eArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY, screenMinX, screenMinY);
 			this.eArr[i].getVel().randomize();
 		}
 	}
@@ -118,7 +122,7 @@ public class Game {
 				newArr[i]=eArr[i];
 			}
 			for(int i=this.enemyNum; i<enemyNumNew; i++){
-				newArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY);
+				newArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY, screenMinX, screenMinY);
 				newArr[i].getVel().randomize();
 			}
 		}
