@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.Scanner;
@@ -27,6 +29,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private int bubble=100;
 	private int actorSize=20;
 	private boolean dead=false;
+	private boolean gameStarted=false;
 	
 	// display fields
 	private int screenX;
@@ -75,6 +78,38 @@ public class DodgeCanvas extends Canvas implements Runnable {
 			}
 					
 		}); // end of key listener
+		addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				gameStarted=true;
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		//setEnemyNum(numEnemies);
 		setP(new Player(screenX/2, screenY/2, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS, health, score));
@@ -120,7 +155,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	 * commit actions for turn and reset enemies as needed. Increment score and health for player as required
 	 */
 	public void cycleTurn(){
-		if(player.getHealth()>0){
+		if(player.getHealth()>0&&gameStarted){
 			player.move();
 			if(player.getHealth()<=0){
 				this.dead=true;
@@ -328,7 +363,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (repaintReminder == Thread.currentThread()) {
-			System.out.println(player.getHealth()+", "+player.getScore()+", "+numEnemies);
+			//System.out.println(player.getHealth()+", "+player.getScore()+", "+numEnemies);
 			repaint();
 			cycleTurn();
 			try {
