@@ -224,22 +224,35 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		 * Displays the colored border for the statistics
 		 */
 		g2d.setColor(new Color(colorOffsets[0]+100, colorOffsets[1]+100, colorOffsets[2]+100));
+		// smaller lines
 		bs = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		g2d.setStroke(bs);
-		g2d.drawLine(screenX/2-50, OTHER_MARGINS+50, screenX/2-50, OTHER_MARGINS+(25*5));
-		g2d.drawLine(screenX/2+50, OTHER_MARGINS+50, screenX/2+50, OTHER_MARGINS+(25*5));
-		String label="Health/Score";
-		g2d.drawString(label, (int)(screenX/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50);
+		g2d.drawLine(20, OTHER_MARGINS+20, 20, OTHER_MARGINS+(25*9));
+		g2d.drawLine(LEFT_MARGIN+10, OTHER_MARGINS+20, LEFT_MARGIN+10, OTHER_MARGINS+(25*9));
+		// strings
+		String ins1 = "Instructions:";
+		String ins2 = "Click to begin";
+		String ins3 = "movement. Use";
+		String ins4 = "arrow keys to";
+		String ins5 = "avoid enemies.";
+		String label = "Health/Score";
+		g2d.drawString(ins1, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(0)*g2d.getFontMetrics().getHeight());
+		g2d.drawString(ins2, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(1)*g2d.getFontMetrics().getHeight());
+		g2d.drawString(ins3, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(2)*g2d.getFontMetrics().getHeight());
+		g2d.drawString(ins4, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(3)*g2d.getFontMetrics().getHeight());
+		g2d.drawString(ins5, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(4)*g2d.getFontMetrics().getHeight());
+		g2d.drawString(label, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(6)*g2d.getFontMetrics().getHeight());
 		String nums=player.getHealth()+"/"+player.getScore();
-		g2d.drawString(nums, (int)(screenX/2-((g2d.getFontMetrics().stringWidth(nums))/2)), OTHER_MARGINS+50+g2d.getFontMetrics().getHeight());
+		g2d.drawString(nums, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(nums))/2)), OTHER_MARGINS+50+(7)*g2d.getFontMetrics().getHeight());
 		if(player.getHealth()<=0){
-			String dead="You are dead";
-			g2d.drawString(dead, (int)(screenX/2-((g2d.getFontMetrics().stringWidth(dead))/2)), (int)(OTHER_MARGINS+50+2*g2d.getFontMetrics().getHeight()));
+			String dead="You are dead!";
+			g2d.drawString(dead, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(dead))/2)), (int)(OTHER_MARGINS+50+(9)*g2d.getFontMetrics().getHeight()));
 		}
+		// bigger lines
 		bs = new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		g2d.setStroke(bs);
-		g2d.drawLine(screenX/2-60, OTHER_MARGINS+50, screenX/2-60, OTHER_MARGINS+(25*5));
-		g2d.drawLine(screenX/2+60, OTHER_MARGINS+50, screenX/2+60, OTHER_MARGINS+(25*5));
+		g2d.drawLine(20+8, OTHER_MARGINS+20, 20+8, OTHER_MARGINS+(25*9));
+		g2d.drawLine(LEFT_MARGIN+10-8, OTHER_MARGINS+20, LEFT_MARGIN+10-8, OTHER_MARGINS+(25*9));
 	}
 	
 	public void update(Graphics g){
