@@ -27,6 +27,8 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	// display fields
 	private int screenX;
 	private int screenY;
+	private int playX;
+	private int playY;
 	private int[] colorOffsets;
 	
 	// final fields
@@ -34,10 +36,12 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private final int OTHER_MARGINS = 40; 	// dimensions of left, up, right margins
 	private final int GRID_DIM = 20; 		// width and height of a single cell
 	
-	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE) {
+	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE, double initX, double initY) {
 		System.out.println("initializing canvas");
 		screenX = frameWidth;
 		screenY = frameHeight;
+		playX = (int)((double)(screenX-LEFT_MARGIN)*initX/2.0);
+		playY = (int)((double)(screenX-LEFT_MARGIN)*initY/2.0);
 		health = initHealth;
 		score = initScore;
 		bubble = colRad;
@@ -47,14 +51,14 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					System.out.println(e.getKeyChar() + "\t" + e.getKeyCode() + "\n");
-					if (e.getKeyChar() == 'w') { player.setVel(new Direction(0, 1)); }	// 'up'
+					if (e.getKeyChar() == 'w') { player.setVel(new Direction(0,-1)); }	// 'up'
 					if (e.getKeyChar() == 'd') { player.setVel(new Direction(1, 0)); }	// 'right'
-					if (e.getKeyChar() == 's') { player.setVel(new Direction(0,-1)); }	// 'down'
+					if (e.getKeyChar() == 's') { player.setVel(new Direction(0,1)); }	// 'down'
 					if (e.getKeyChar() == 'a') { player.setVel(new Direction(-1,0)); }	// 'left'
-					if (e.getKeyChar() == 'q') { player.setVel(new Direction(-1,1)); }	// 'NW'
-					if (e.getKeyChar() == 'e') { player.setVel(new Direction(1, 1)); }	// 'NE'
-					if (e.getKeyChar() == 'c') { player.setVel(new Direction(1,-1)); }	// 'SE'
-					if (e.getKeyChar() == 'z') { player.setVel(new Direction(-1,-1)); }	// 'SW'
+					if (e.getKeyChar() == 'q') { player.setVel(new Direction(-1,-1)); }	// 'NW'
+					if (e.getKeyChar() == 'e') { player.setVel(new Direction(1,-1)); }	// 'NE'
+					if (e.getKeyChar() == 'c') { player.setVel(new Direction(1, 1)); }	// 'SE'
+					if (e.getKeyChar() == 'z') { player.setVel(new Direction(-1,1)); }	// 'SW'
 					if (e.getKeyChar() == 'x' || e.getKeyChar() == ' ') { player.setVel(new Direction(0, 0)); }	// 'stop'
 				}
 
