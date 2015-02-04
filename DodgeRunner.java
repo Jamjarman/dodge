@@ -24,7 +24,7 @@ public class DodgeRunner {
 		mf.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		mf.setVisible(true);
 		mf.setBackground(Color.BLACK);
-		DodgeCanvas myCanvas = new DodgeCanvas(FRAME_WIDTH, FRAME_HEIGHT, INIT_HEALTH, INIT_SCORE, COL_RADIUS, 2);
+		DodgeCanvas myCanvas = new DodgeCanvas(FRAME_WIDTH, FRAME_HEIGHT, INIT_HEALTH, INIT_SCORE, COL_RADIUS, 25);
 		mf.add(myCanvas);
 		/*
 		 * Allows you to close the window using exit buttons
