@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
@@ -260,9 +261,13 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	
 	private void paintActors(Graphics graphics) {
 		Graphics2D g2=(Graphics2D)graphics;
-		g2.setColor(new Color(0f, 1f, 0f));
-		g2.drawRect((int)player.getX()-(actorSize/2), (int)player.getY()-(actorSize/2), actorSize, actorSize);
-		g2.setColor(new Color(1f, 0f, 0f));
+		g2.setColor(new Color(255, 255, 255));
+		Ellipse2D.Double circle = new Ellipse2D.Double((int)player.getX()-(actorSize/2), (int)player.getY()-(actorSize/2), actorSize*1.2, actorSize*1.2);
+		g2.fill(circle);
+//		g2.drawRect((int)player.getX()-(actorSize/2), (int)player.getY()-(actorSize/2), actorSize, actorSize);
+		g2.setColor(new Color(colorOffsets[0]+100, colorOffsets[1]+100, colorOffsets[2]+100));
+		BasicStroke bs = new BasicStroke(3);
+		g2.setStroke(bs);
 		for(int i=0; i<numEnemies; i++){
 			g2.drawRect((int)eArr[i].getX()-(actorSize/2), (int)eArr[i].getY()-(actorSize/2), actorSize, actorSize);
 		}
@@ -310,7 +315,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 			repaint();
 			cycleTurn();
 			try {
-				Thread.sleep(10);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
