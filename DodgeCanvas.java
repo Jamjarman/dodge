@@ -137,6 +137,9 @@ public class DodgeCanvas extends Canvas implements Runnable {
 					eArr[i].reset();
 				}
 			}
+			if(player.getScore()>0&&player.getScore()%100==0){
+				setEnemyNum(numEnemies+5);
+			}
 		}
 	}
 
@@ -200,6 +203,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				newArr[i]=this.eArr[i];
 			}
 		}
+		this.numEnemies=enemyNumNew;
 		eArr=newArr;
 	} // end method setEnemyNum
 	
@@ -324,7 +328,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (repaintReminder == Thread.currentThread()) {
-			System.out.println(player.getHealth()+", "+player.getScore());
+			System.out.println(player.getHealth()+", "+player.getScore()+", "+numEnemies);
 			repaint();
 			cycleTurn();
 			try {
