@@ -25,7 +25,7 @@ public class Enemy extends Actor {
 			if(this.getY()+this.getVel().getYVel()>0&&this.getY()+this.getVel().getYVel()<this.getScreenMaxY())
 				this.setY(this.getY()+this.getVel().getYVel());
 			else
-				offScreen=false;
+				offScreen=true;
 		}
 	}
 	

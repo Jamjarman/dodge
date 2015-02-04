@@ -22,7 +22,9 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private int numEnemies;
 	private int health;
 	private int score;
-	private int bubble;
+	private int bubble=40;
+	private int actorSize=20;
+	private boolean dead=false;
 	
 	// display fields
 	private int screenX;
@@ -37,7 +39,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private final int GRID_DIM = 20; 		// width and height of a single cell
 	
 	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE, double initX, double initY) {
-		System.out.println("initializing canvas");
+		//System.out.println("initializing canvas");
 		screenX = frameWidth;
 		screenY = frameHeight;
 		playX = (int)((double)(screenX-LEFT_MARGIN)*initX/2.0);
@@ -99,8 +101,9 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	 * @param x2
 	 * @return
 	 */
-	private boolean inArea(double x1, double x2){
-		if(Math.abs(x1-x2) <= bubble){
+	private boolean inArea(Actor a1, Actor a2){
+		double dist=Math.sqrt(Math.pow(a1.getX()+a2.getX(), 2)+Math.pow(a1.getY()+a2.getY(), 2));
+		if(dist<=bubble){
 			return true;
 		}
 		return false;
@@ -111,13 +114,16 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	 */
 	public void cycleTurn(){
 		player.move();
+		if(player.getHealth()<=0){
+			dead=true;
+		}
 		for(int i=0; i<eArr.length; i++){
 			eArr[i].move();
 			if(eArr[i].isOffScreen()){
 				player.incScore();
 				eArr[i].reset();
 			}
-			else if(inArea(eArr[i].getX(), player.getX())&&inArea(eArr[i].getY(), player.getY())){
+			else if(inArea(player, eArr[i])&&inArea(player, eArr[i])){
 				player.damagePlayer(eArr[i].getDamage());
 				eArr[i].reset();
 			}
@@ -223,7 +229,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	}
 
 	public void paint(Graphics g) {
-		System.out.println("in paint method");
+		//System.out.println("in paint method");
 		//if(buffer==null || buffer.getWidth(null)!=getWidth()||buffer.getHeight(null)!=getHeight()){
 			buffer=(BufferedImage) createImage(getWidth(), getHeight());
 		//}
@@ -238,10 +244,10 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private void paintActors(Graphics graphics) {
 		Graphics2D g2=(Graphics2D)graphics;
 		g2.setColor(new Color(0f, 1f, 0f));
-		g2.drawRect((int)player.getX(), (int)player.getY(), 20, 20);
+		g2.drawRect((int)player.getX()-(actorSize/2), (int)player.getY()-(actorSize/2), actorSize, actorSize);
 		g2.setColor(new Color(1f, 0f, 0f));
 		for(int i=0; i<numEnemies; i++){
-			g2.drawRect((int)eArr[i].getX(), (int)eArr[i].getY(), 20, 20);
+			g2.drawRect((int)eArr[i].getX()-(actorSize/2), (int)eArr[i].getY()-(actorSize/2), actorSize, actorSize);
 		}
 	}
 
@@ -283,7 +289,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (repaintReminder == Thread.currentThread()) {
-			System.out.println("Running thread");
+			System.out.println(player.getHealth()+", "+player.getScore());
 			repaint();
 			cycleTurn();
 			try {
