@@ -190,6 +190,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		else if(player.getReset()){
 			player.setHealth(this.initHealth);
 			player.setScore(this.initScore);
+			player.setReset(false);
 			this.numEnemies=this.initNumEnemies;
 			player.setX(this.screenX/2);
 			player.setY(this.screenY/2);
