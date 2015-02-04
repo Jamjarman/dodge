@@ -30,6 +30,9 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private int actorSize=20;
 	private boolean dead=false;
 	private boolean gameStarted=false;
+	public int initNumEnemies;
+	public int initHealth;
+	public int initScore;
 	
 	// display fields
 	private int screenX;
@@ -43,21 +46,24 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private final int OTHER_MARGINS = 40; 	// dimensions of left, up, right margins
 	private final int GRID_DIM = 20; 		// width and height of a single cell
 	
-	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE) {
+	public DodgeCanvas(int frameWidth, int frameHeight, int initHealthN, int initScoreN, int colRad, int numE) {
 		//System.out.println("initializing canvas");	
 		screenX = frameWidth;
 		screenY = frameHeight;
 //		playX = (int)((double)(screenX-LEFT_MARGIN)*initX/2.0);
 //		playY = (int)((double)(screenX-LEFT_MARGIN)*initY/2.0);
-		health = initHealth;
-		score = initScore;
+		health = initHealthN;
+		score = initScoreN;
+		this.initHealth=initHealthN;
+		this.initScore=initScoreN;
 		bubble = colRad;
 		numEnemies=numE;
+		initNumEnemies=numE;
 		// Key listener
 		addKeyListener(new KeyListener() {			
 				@Override
 				public void keyPressed(KeyEvent e) {
-					System.out.println(e.getKeyChar() + "\t" + e.getKeyCode() + "\n");
+					//System.out.println(e.getKeyChar() + "\t" + e.getKeyCode() + "\n");
 					if (e.getKeyChar() == 'w') { player.setVel(new Direction(0,-1)); }	// 'up'
 					if (e.getKeyChar() == 'd') { player.setVel(new Direction(1, 0)); }	// 'right'
 					if (e.getKeyChar() == 's') { player.setVel(new Direction(0,1)); }	// 'down'
@@ -67,6 +73,11 @@ public class DodgeCanvas extends Canvas implements Runnable {
 					if (e.getKeyChar() == 'c') { player.setVel(new Direction(1, 1)); }	// 'SE'
 					if (e.getKeyChar() == 'z') { player.setVel(new Direction(-1,1)); }	// 'SW'
 					if (e.getKeyChar() == 'x' || e.getKeyChar() == ' ') { player.setVel(new Direction(0, 0)); }	// 'stop'
+					if (e.getKeyChar() == 'r'){
+						if(player.getHealth()<=0){
+							player.setReset(true);
+						}
+					}
 				}
 
 				@Override
@@ -175,6 +186,17 @@ public class DodgeCanvas extends Canvas implements Runnable {
 			if(player.getScore()>0&&player.getScore()%100==0){
 				setEnemyNum(numEnemies+5);
 			}
+		}
+		else if(player.getReset()){
+			player.setHealth(this.initHealth);
+			player.setScore(this.initScore);
+			this.numEnemies=this.initNumEnemies;
+			player.setX(this.screenX/2);
+			player.setY(this.screenY/2);
+			eArr=null;
+			genEnemies();
+			this.dead=false;
+			this.gameStarted=false;
 		}
 	}
 
@@ -320,9 +342,12 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		g2.setColor(new Color(colorOffsets[0]+100, colorOffsets[1]+100, colorOffsets[2]+100));
 		BasicStroke bs = new BasicStroke(3);
 		g2.setStroke(bs);
-		for(int i=0; i<numEnemies; i++){
-			g2.drawRect((int)eArr[i].getX()-(actorSize/2), (int)eArr[i].getY()-(actorSize/2), actorSize, actorSize);
+		if(gameStarted){
+			for(int i=0; i<numEnemies; i++){
+				g2.drawRect((int)eArr[i].getX()-(actorSize/2), (int)eArr[i].getY()-(actorSize/2), actorSize, actorSize);
+			}
 		}
+		
 	}
 
 	/**

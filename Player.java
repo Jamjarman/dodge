@@ -3,6 +3,7 @@ public class Player extends Actor {
 
 	private int health;
 	private int score;
+	private boolean reset;
 	
 	/**
 	 * generate a new player character based on actor super class adding health and score int fields
@@ -15,6 +16,7 @@ public class Player extends Actor {
 		super(x, y, scX, scY, minX, minY);
 		health=h;
 		score=s;
+		reset=false;
 	}
 	
 	/**
@@ -62,6 +64,14 @@ public class Player extends Actor {
 	 */
 	public void damagePlayer(int damage){
 		health-=damage;
+	}
+
+	public boolean getReset() {
+		return reset;
+	}
+
+	public void setReset(boolean reset) {
+		this.reset = reset;
 	}
 	
 	
