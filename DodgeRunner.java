@@ -17,7 +17,7 @@ public class DodgeRunner {
 	private final int INIT_HEALTH = 100;
 	private final int INIT_SCORE = 0;
 	private final int COL_RADIUS = 20;
-	private final int NUM_ENEMIES = 15;
+	private final int NUM_ENEMIES = 15;	// # enemies created
 
 	// default constructor
 	public DodgeRunner() {
