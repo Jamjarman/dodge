@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.Scanner;
 
 
 public class DodgeCanvas extends Canvas implements Runnable {
@@ -22,7 +23,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private int numEnemies;
 	private int health;
 	private int score;
-	private int bubble=40;
+	private int bubble=100;
 	private int actorSize=20;
 	private boolean dead=false;
 	
@@ -38,12 +39,12 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private final int OTHER_MARGINS = 40; 	// dimensions of left, up, right margins
 	private final int GRID_DIM = 20; 		// width and height of a single cell
 	
-	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE, double initX, double initY) {
-		//System.out.println("initializing canvas");
+	public DodgeCanvas(int frameWidth, int frameHeight, int initHealth, int initScore, int colRad, int numE) {
+		//System.out.println("initializing canvas");	
 		screenX = frameWidth;
 		screenY = frameHeight;
-		playX = (int)((double)(screenX-LEFT_MARGIN)*initX/2.0);
-		playY = (int)((double)(screenX-LEFT_MARGIN)*initY/2.0);
+//		playX = (int)((double)(screenX-LEFT_MARGIN)*initX/2.0);
+//		playY = (int)((double)(screenX-LEFT_MARGIN)*initY/2.0);
 		health = initHealth;
 		score = initScore;
 		bubble = colRad;
@@ -75,7 +76,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		}); // end of key listener
 		
 		//setEnemyNum(numEnemies);
-		setP(new Player(screenX/2, screenY/2, screenX, screenY, health, score));
+		setP(new Player(screenX/2, screenY/2, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS, health, score));
 		genEnemies();
 		
 		colorOffsets = chooseColorScheme();
@@ -89,8 +90,9 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private void genEnemies() {
 		this.eArr=new Enemy[this.numEnemies];
 		for(int i=0; i<numEnemies; i++){
-			this.eArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY);
+			this.eArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS);
 			this.eArr[i].getVel().randomize();
+			this.eArr[i].reset();
 		}
 	}
 	
@@ -102,9 +104,13 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	 * @return
 	 */
 	private boolean inArea(Actor a1, Actor a2){
-		double dist=Math.sqrt(Math.pow(a1.getX()+a2.getX(), 2)+Math.pow(a1.getY()+a2.getY(), 2));
-		if(dist<=bubble){
+		
+		//double dist=Math.sqrt(Math.pow(a1.getX()+a2.getX(), 2)+Math.pow(a1.getY()+a2.getY(), 2));
+		//System.out.println("checking closeness "+dist+" a1:"+a1.getX()+", "+a1.getY()+" a2 "+a2.getX()+", "+a2.getY());
+		//System.out.println(dist);
+		if(Math.abs(a1.getX()-a2.getX())<=bubble&&Math.abs(a1.getY()-a2.getY())<=bubble){
 			return true;
+			
 		}
 		return false;
 	}
@@ -123,7 +129,8 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				player.incScore();
 				eArr[i].reset();
 			}
-			else if(inArea(player, eArr[i])&&inArea(player, eArr[i])){
+			else if(inArea(player, eArr[i])){
+				System.out.println("player hit!");
 				player.damagePlayer(eArr[i].getDamage());
 				eArr[i].reset();
 			}
@@ -181,8 +188,8 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				newArr[i]=eArr[i];
 			}
 			for(int i=this.numEnemies; i<enemyNumNew; i++){
-				newArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY);
-				newArr[i].getVel().randomize();
+				newArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS);
+				newArr[i].reset();
 			}
 		}
 		else{
