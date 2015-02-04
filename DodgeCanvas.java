@@ -119,20 +119,22 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	 * commit actions for turn and reset enemies as needed. Increment score and health for player as required
 	 */
 	public void cycleTurn(){
-		player.move();
-		if(player.getHealth()<=0){
-			dead=true;
-		}
-		for(int i=0; i<eArr.length; i++){
-			eArr[i].move();
-			if(eArr[i].isOffScreen()){
-				player.incScore();
-				eArr[i].reset();
+		if(player.getHealth()>0){
+			player.move();
+			if(player.getHealth()<=0){
+				this.dead=true;
 			}
-			else if(inArea(player, eArr[i])){
-				System.out.println("player hit!");
-				player.damagePlayer(eArr[i].getDamage());
-				eArr[i].reset();
+			for(int i=0; i<eArr.length; i++){
+				eArr[i].move();
+				if(eArr[i].isOffScreen()){
+					player.incScore();
+					eArr[i].reset();
+				}
+				else if(inArea(player, eArr[i])){
+					System.out.println("player hit!");
+					player.damagePlayer(eArr[i].getDamage());
+					eArr[i].reset();
+				}
 			}
 		}
 	}
@@ -225,6 +227,14 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		g2d.setStroke(bs);
 		g2d.drawLine(screenX/2-50, OTHER_MARGINS+50, screenX/2-50, OTHER_MARGINS+(25*5));
 		g2d.drawLine(screenX/2+50, OTHER_MARGINS+50, screenX/2+50, OTHER_MARGINS+(25*5));
+		String label="Health/Score";
+		g2d.drawString(label, (int)(screenX/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50);
+		String nums=player.getHealth()+"/"+player.getScore();
+		g2d.drawString(nums, (int)(screenX/2-((g2d.getFontMetrics().stringWidth(nums))/2)), OTHER_MARGINS+50+g2d.getFontMetrics().getHeight());
+		if(player.getHealth()<=0){
+			String dead="You are dead";
+			g2d.drawString(dead, (int)(screenX/2-((g2d.getFontMetrics().stringWidth(dead))/2)), (int)(OTHER_MARGINS+50+2*g2d.getFontMetrics().getHeight()));
+		}
 		bs = new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		g2d.setStroke(bs);
 		g2d.drawLine(screenX/2-60, OTHER_MARGINS+50, screenX/2-60, OTHER_MARGINS+(25*5));
