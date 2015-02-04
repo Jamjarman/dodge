@@ -185,6 +185,8 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	
 	public void paintScreen(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(Color.BLACK);
+		g2d.drawRect(0, 0, getWidth(), getHeight());
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // for smoother display
 		
 		// Draws inner border
@@ -218,13 +220,14 @@ public class DodgeCanvas extends Canvas implements Runnable {
 
 	public void paint(Graphics g) {
 		System.out.println("in paint method");
-		if(buffer==null || buffer.getWidth(null)!=getWidth()||buffer.getHeight(null)!=getHeight()){
+		//if(buffer==null || buffer.getWidth(null)!=getWidth()||buffer.getHeight(null)!=getHeight()){
 			buffer=(BufferedImage) createImage(getWidth(), getHeight());
-		}
+		//}
 		paintScreen(buffer.getGraphics());
 		Graphics2D g2=(Graphics2D)g;
 		BufferedImage withActors=buffer;
 		paintActors(withActors.getGraphics());
+		
 		g2.drawImage(withActors, 0, 0, null);
 	}
 	
