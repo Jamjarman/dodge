@@ -16,7 +16,8 @@ public class DodgeRunner {
 	private final int FRAME_HEIGHT = 900;
 	private final int INIT_HEALTH = 100;
 	private final int INIT_SCORE = 0;
-	private final int COL_RADIUS = 30;
+	private final int COL_RADIUS = 20;
+	private final int NUM_ENEMIES = 15;
 
 	// default constructor
 	public DodgeRunner() {
@@ -24,7 +25,7 @@ public class DodgeRunner {
 		mf.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		mf.setVisible(true);
 		mf.setBackground(Color.BLACK);
-		DodgeCanvas myCanvas = new DodgeCanvas(FRAME_WIDTH, FRAME_HEIGHT, INIT_HEALTH, INIT_SCORE, COL_RADIUS, 25);
+		DodgeCanvas myCanvas = new DodgeCanvas(FRAME_WIDTH, FRAME_HEIGHT, INIT_HEALTH, INIT_SCORE, COL_RADIUS, NUM_ENEMIES);
 		mf.add(myCanvas);
 		/*
 		 * Allows you to close the window using exit buttons
