@@ -1,6 +1,7 @@
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -298,17 +299,21 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		String ins4 = "wasd-qezc to";
 		String ins5 = "avoid enemies.";
 		String label = "Health/Score";
+		String rest="Press r to restart";
+		g2d.setFont(new Font("Times New Roman", Font.PLAIN, 22));
 		g2d.drawString(ins1, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(0)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(ins2, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(1)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(ins3, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(2)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(ins4, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(3)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(ins5, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(4)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(label, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(6)*g2d.getFontMetrics().getHeight());
+		
 		String nums=player.getHealth()+"/"+player.getScore();
 		g2d.drawString(nums, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(nums))/2)), OTHER_MARGINS+50+(7)*g2d.getFontMetrics().getHeight());
 		if(player.getHealth()<=0){
 			String dead="You are dead!";
 			g2d.drawString(dead, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(dead))/2)), (int)(OTHER_MARGINS+50+(9)*g2d.getFontMetrics().getHeight()));
+			g2d.drawString(rest, (int)((LEFT_MARGIN+30)/2-((g2d.getFontMetrics().stringWidth(rest))/2)), OTHER_MARGINS+50+(10)*g2d.getFontMetrics().getHeight());
 		}
 		// bigger lines
 		bs = new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
