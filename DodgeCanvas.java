@@ -233,7 +233,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		String ins1 = "Instructions:";
 		String ins2 = "Click to begin";
 		String ins3 = "movement. Use";
-		String ins4 = "arrow keys to";
+		String ins4 = "wasd-qezc to";
 		String ins5 = "avoid enemies.";
 		String label = "Health/Score";
 		g2d.drawString(ins1, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(0)*g2d.getFontMetrics().getHeight());
