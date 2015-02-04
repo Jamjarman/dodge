@@ -28,11 +28,10 @@ public class DodgeCanvas extends Canvas implements Runnable {
 	private boolean dead=false;
 	
 	// display fields
-	private int screenX;
-	private int screenY;
-	private int playX;
-	private int playY;
+	private int screenX, screenY;			// actual screen dimensions
+	private int playX, playY;				// margins for playable screen
 	private int[] colorOffsets;
+	private int minX, minY, maxX, maxY;		// minimum and maximum boundaries for actors
 	
 	// final fields
 	private final int LEFT_MARGIN = 180;	// dimensions of bottom margin
@@ -43,8 +42,16 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		//System.out.println("initializing canvas");	
 		screenX = frameWidth;
 		screenY = frameHeight;
+<<<<<<< HEAD
 //		playX = (int)((double)(screenX-LEFT_MARGIN)*initX/2.0);
 //		playY = (int)((double)(screenX-LEFT_MARGIN)*initY/2.0);
+=======
+		playX = (int)((double)(screenX-LEFT_MARGIN)*(1-initX)/2.0);
+		playY = (int)((double)screenY*(1-initY)/2.0);
+		setMinMaxes();
+		System.out.println("PlayY = "+playY);
+		System.out.println("MaxY = "+maxY);
+>>>>>>> origin/master
 		health = initHealth;
 		score = initScore;
 		bubble = colRad;
@@ -76,21 +83,38 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		}); // end of key listener
 		
 		//setEnemyNum(numEnemies);
+<<<<<<< HEAD
 		setP(new Player(screenX/2, screenY/2, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS, health, score));
+=======
+		setP(new Player(screenX/2, screenY/2, screenX, screenY, health, score, minX, maxX));
+>>>>>>> origin/master
 		genEnemies();
 		
-		colorOffsets = chooseColorScheme();
+		colorOffsets = new int[]{255, 255, 255};
 		repaintReminder = new Thread(this);
 		repaintReminder.start();
+	} // end of constructor
+	
+	private void setMinMaxes() {
+		minX = LEFT_MARGIN+playX;
+		minY = playY;
+		maxX = screenX-playX;
+		maxY = screenY-(playY*2);
 	}
 
+	
+	
 	/**
 	 * generate a set of enemies
 	 */
 	private void genEnemies() {
 		this.eArr=new Enemy[this.numEnemies];
 		for(int i=0; i<numEnemies; i++){
+<<<<<<< HEAD
 			this.eArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS);
+=======
+			this.eArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY, minX, maxX);
+>>>>>>> origin/master
 			this.eArr[i].getVel().randomize();
 			this.eArr[i].reset();
 		}
@@ -188,8 +212,13 @@ public class DodgeCanvas extends Canvas implements Runnable {
 				newArr[i]=eArr[i];
 			}
 			for(int i=this.numEnemies; i<enemyNumNew; i++){
+<<<<<<< HEAD
 				newArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX-OTHER_MARGINS, screenY-OTHER_MARGINS-LEFT_MARGIN, (double)(LEFT_MARGIN+OTHER_MARGINS), OTHER_MARGINS);
 				newArr[i].reset();
+=======
+				newArr[i]=new Enemy(Math.random()*screenX, Math.random()*screenY, screenX, screenY, minX, maxX);
+				newArr[i].getVel().randomize();
+>>>>>>> origin/master
 			}
 		}
 		else{
@@ -208,19 +237,19 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		
 		// Draws inner border
 		BasicStroke bs = new BasicStroke(3);
-		g2d.setColor(new Color(colorOffsets[0]+100, colorOffsets[1]+100, colorOffsets[2]+100));
+		g2d.setColor(new Color(colorOffsets[0], colorOffsets[1], colorOffsets[2]));
 		g2d.setStroke(bs);
-		g2d.drawRect(LEFT_MARGIN+OTHER_MARGINS-4, OTHER_MARGINS-4, (screenX-2*OTHER_MARGINS-LEFT_MARGIN)+8, (screenY-(6*OTHER_MARGINS))+8);
+		g2d.drawRect(minX, minY, maxX-minX, maxY-minY);
 				
 		// Draws outer border
 		bs = new BasicStroke(6);
 		g2d.setStroke(bs);
-		g2d.drawRect(LEFT_MARGIN+OTHER_MARGINS-10, OTHER_MARGINS-10, (screenX-2*OTHER_MARGINS-LEFT_MARGIN)+21, (screenY-(6*OTHER_MARGINS))+21);
+		g2d.drawRect(minX-10, minY-10, maxX-minX+20, maxY-minY+20);
 		
 		/*
 		 * Displays the colored border for the statistics
 		 */
-		g2d.setColor(new Color(colorOffsets[0]+100, colorOffsets[1]+100, colorOffsets[2]+100));
+		g2d.setColor(new Color(colorOffsets[0], colorOffsets[1], colorOffsets[2]));
 		bs = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		g2d.setStroke(bs);
 		g2d.drawLine(screenX/2-50, OTHER_MARGINS+50, screenX/2-50, OTHER_MARGINS+(25*5));
@@ -257,40 +286,6 @@ public class DodgeCanvas extends Canvas implements Runnable {
 			g2.drawRect((int)eArr[i].getX()-(actorSize/2), (int)eArr[i].getY()-(actorSize/2), actorSize, actorSize);
 		}
 	}
-
-	/**
-	 * Method to randomly choose a color scheme for the screen borders
-	 * (not important, just had it left over)
-	 * @return
-	 */
-	public int[] chooseColorScheme() {
-		int num = (int)(Math.random()*7)+1;
-		int[] offsets = new int[3];
-		switch (num) {
-		case 1:
-			offsets = new int[]{55, 55, 55}; 	// grayscale
-			break;
-		case 2:
-			offsets = new int[]{0, 55, 55};		// teal
-			break;
-		case 3:
-			offsets = new int[]{55, 0, 55};		// magenta
-			break;
-		case 4:
-			offsets = new int[]{55, 55, 0};		// yellow/tan
-			break;
-		case 5:
-			offsets = new int[]{0, 0, 55};		// blue
-			break;
-		case 6:
-			offsets = new int[]{55, 0, 0};		// red
-			break;
-		case 7:
-			offsets = new int[]{0, 55, 0};		// green
-			break;
-		}
-		return offsets;
-	} // end method chooseColorScheme
 	
 	@Override
 	public void run() {
