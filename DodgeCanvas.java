@@ -79,6 +79,12 @@ public class DodgeCanvas extends Canvas implements Runnable {
 							player.setReset(true);
 						}
 					}
+					if (e.getKeyChar() == 'p'){
+						player.setHealth(player.getHealth()+10);
+					}
+					if (e.getKeyChar() == 'l'){
+						player.setScore(player.getScore()+1);
+					}
 				}
 
 				@Override
@@ -300,7 +306,7 @@ public class DodgeCanvas extends Canvas implements Runnable {
 		String ins5 = "avoid enemies.";
 		String label = "Health/Score";
 		String rest="Press r to restart";
-		g2d.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+		g2d.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		g2d.drawString(ins1, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(0)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(ins2, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(1)*g2d.getFontMetrics().getHeight());
 		g2d.drawString(ins3, (int)((LEFT_MARGIN+20)/2-((g2d.getFontMetrics().stringWidth(label))/2)), OTHER_MARGINS+50+(2)*g2d.getFontMetrics().getHeight());
